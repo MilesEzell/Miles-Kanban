@@ -219,8 +219,8 @@ label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); display: 
 .column {
   background: var(--column-bg);
   border-radius: var(--radius);
-  width: 272px;
-  flex-shrink: 0;
+  flex: 1 1 220px;
+  min-width: 220px;
   display: flex;
   flex-direction: column;
   max-height: calc(100vh - 160px);
@@ -495,7 +495,7 @@ label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); display: 
 
 /* ===== Column add ===== */
 .add-column-btn {
-  width: 272px;
+  width: 240px;
   flex-shrink: 0;
   background: rgba(255,255,255,0.15);
   border: 2px dashed var(--border);
@@ -511,7 +511,7 @@ label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); display: 
 }
 .add-column-btn:hover { background: var(--surface); color: var(--text); }
 .add-column-form {
-  width: 272px;
+  width: 240px;
   flex-shrink: 0;
   background: var(--column-bg);
   border-radius: var(--radius);
