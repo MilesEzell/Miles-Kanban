@@ -47,7 +47,25 @@ export function BoardView() {
   const [addingColumn, setAddingColumn] = useState(false);
   const [newColName, setNewColName] = useState("");
   const [editingBoardName, setEditingBoardName] = useState("");
+  const [lockedColumns, setLockedColumns] = useState<Set<string>>(new Set());
   const boardNameRef = useRef<HTMLInputElement>(null);
+
+  // Load locked columns from localStorage when board changes
+  useEffect(() => {
+    if (!boardId) return;
+    const stored = localStorage.getItem(`locked-cols:${boardId}`);
+    setLockedColumns(stored ? new Set(JSON.parse(stored)) : new Set());
+  }, [boardId]);
+
+  const toggleLock = (columnId: string) => {
+    setLockedColumns((prev) => {
+      const next = new Set(prev);
+      if (next.has(columnId)) next.delete(columnId);
+      else next.add(columnId);
+      localStorage.setItem(`locked-cols:${boardId}`, JSON.stringify([...next]));
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!boardId) return;
@@ -296,10 +314,12 @@ export function BoardView() {
               <KanbanColumn
                 key={col.id}
                 column={col}
+                locked={lockedColumns.has(col.id)}
                 onCardClick={setSelectedCard}
                 onCardAdd={handleCardAdd}
                 onColumnRename={handleColumnRename}
                 onColumnDelete={handleColumnDelete}
+                onToggleLock={toggleLock}
               />
             ))}
           </SortableContext>

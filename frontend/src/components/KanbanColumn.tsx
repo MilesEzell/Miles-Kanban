@@ -8,13 +8,15 @@ import type { Card, Column } from "../types";
 
 interface Props {
   column: Column;
+  locked: boolean;
   onCardClick: (card: Card) => void;
   onCardAdd: (columnId: string, card: Card) => void;
   onColumnRename: (columnId: string, name: string) => void;
   onColumnDelete: (columnId: string) => void;
+  onToggleLock: (columnId: string) => void;
 }
 
-export function KanbanColumn({ column, onCardClick, onCardAdd, onColumnRename, onColumnDelete }: Props) {
+export function KanbanColumn({ column, locked, onCardClick, onCardAdd, onColumnRename, onColumnDelete, onToggleLock }: Props) {
   const [addingCard, setAddingCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState("");
   const [editingName, setEditingName] = useState(column.name);
@@ -22,7 +24,7 @@ export function KanbanColumn({ column, onCardClick, onCardAdd, onColumnRename, o
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   const { attributes, listeners, setNodeRef: setSortableRef, transform, transition, isDragging } =
-    useSortable({ id: column.id, data: { type: "column" } });
+    useSortable({ id: column.id, data: { type: "column" }, disabled: locked });
 
   const { setNodeRef: setDropRef } = useDroppable({ id: `col-${column.id}` });
 
@@ -81,8 +83,8 @@ export function KanbanColumn({ column, onCardClick, onCardAdd, onColumnRename, o
   };
 
   return (
-    <div ref={setSortableRef} style={style} className="column">
-      <div className="column-header" {...attributes} {...listeners}>
+    <div ref={setSortableRef} style={style} className={`column ${locked ? "locked" : ""}`}>
+      <div className="column-header" {...attributes} {...(!locked ? listeners : {})}>
         <input
           ref={nameInputRef}
           className="column-title-input"
@@ -93,6 +95,13 @@ export function KanbanColumn({ column, onCardClick, onCardAdd, onColumnRename, o
           onClick={(e) => e.stopPropagation()}
         />
         <span className="column-count">{column.cards.length}</span>
+        <button
+          className="btn btn-ghost btn-icon btn-sm lock-btn"
+          onClick={(e) => { e.stopPropagation(); onToggleLock(column.id); }}
+          title={locked ? "Unlock column" : "Lock column"}
+        >
+          {locked ? "🔒" : "🔓"}
+        </button>
         <button
           className="btn btn-ghost btn-icon btn-sm"
           onClick={(e) => { e.stopPropagation(); handleDelete(); }}
