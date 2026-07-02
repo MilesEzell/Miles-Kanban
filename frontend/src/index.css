@@ -218,6 +218,7 @@ label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); display: 
 /* ===== Column ===== */
 .column {
   background: var(--column-bg);
+  border: 2px solid var(--border);
   border-radius: var(--radius);
   flex: 1 1 220px;
   min-width: 220px;
@@ -301,7 +302,17 @@ label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); display: 
   width: 48px;
   margin-bottom: 7px;
 }
-.card-title { font-size: 0.875rem; font-weight: 500; line-height: 1.4; }
+.card-title { font-size: 0.875rem; font-weight: 700; line-height: 1.4; }
+.card-description {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .card-meta {
   display: flex;
   align-items: center;
@@ -489,7 +500,7 @@ label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); display: 
 
 /* ===== Locked column ===== */
 .column.locked .column-header { cursor: default; }
-.column.locked { border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+.column.locked { border: 2px solid color-mix(in srgb, var(--accent) 45%, transparent); }
 .lock-btn { font-size: 0.8rem; padding: 2px 5px; opacity: 0.6; }
 .lock-btn:hover { opacity: 1; }
 

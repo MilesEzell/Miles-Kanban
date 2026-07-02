@@ -32,7 +32,10 @@ export function KanbanCard({ card, onClick }: Props) {
       {card.label && (
         <div className="card-label" style={{ background: card.label }} />
       )}
-      <div className="card-title">{card.title}</div>
+      <div className="card-title">• {card.title}</div>
+      {card.description && (
+        <div className="card-description">{card.description}</div>
+      )}
       {card.due_date && (
         <div className="card-meta">
           <span className={`card-due ${isOverdue(card.due_date) ? "overdue" : ""}`}>
