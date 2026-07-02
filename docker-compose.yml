@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: sqlite:////data/kanban.db
+      SECRET_KEY: ${SECRET_KEY:-change_me_in_production_use_a_long_random_string}
+      ALLOW_REGISTRATION: ${ALLOW_REGISTRATION:-true}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin1234}
+    volumes:
+      - db_data:/data
+    networks:
+      - internal
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${PORT:-8080}:80"
+    depends_on:
+      - backend
+    networks:
+      - internal
+    restart: unless-stopped
+
+volumes:
+  db_data:
+
+networks:
+  internal:
